@@ -112,7 +112,7 @@ class Player(pg.sprite.Sprite):
 class Alien(pg.sprite.Sprite):
     """An alien space ship. That slowly moves down the screen."""
 
-    speed = 13
+    speed = 6
     animcycle = 12
     images: List[pg.Surface] = []
 
@@ -273,7 +273,7 @@ def main(winstyle=0):
     boom_sound = load_sound("boom.wav")
     shoot_sound = load_sound("car_door.wav")
     if pg.mixer:
-        music = os.path.join(main_dir, "data", "house_lo.wav")
+        music = os.path.join(main_dir, "data", "videoplayback.wav")
         pg.mixer.music.load(music)
         pg.mixer.music.play(-1)
 
@@ -336,6 +336,9 @@ def main(winstyle=0):
         direction = keystate[pg.K_RIGHT] - keystate[pg.K_LEFT]
         player.move(direction)
         firing = keystate[pg.K_SPACE]
+        quitting = keystate[pg.K_q]
+        if quitting:
+            player.kill()
         if not player.reloading and firing and len(shots) < MAX_SHOTS:
             Shot(player.gunpos(), shots, all)
             if pg.mixer and shoot_sound is not None:
